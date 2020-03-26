@@ -1,6 +1,8 @@
 ﻿using Microsoft.Win32.TaskScheduler;
 using System;
 using System.ComponentModel;
+using System.Diagnostics;
+using System.IO;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
@@ -18,6 +20,11 @@ namespace DXCPkg {
 
             if (ofd.ShowDialog() == DialogResult.OK) {
                 fileLocationTextBox.Text = ofd.FileName;
+                if (!getLogFileLocation().Equals(string.Empty)) {
+                    button3.Enabled = true;
+                } else {
+                    button3.Enabled = false;
+                }
             }
         }
 
@@ -29,6 +36,10 @@ namespace DXCPkg {
             createSchTask("DXC Uninstall As SYSTEM", "/u");
         }
 
+        private void button3_Click(object sender, EventArgs e) {
+            openLogFolder(getLogFileLocation());
+        }
+
 
         private void createSchTask(string name, string arg) {
             if (string.IsNullOrWhiteSpace(fileLocationTextBox.Text)) {
@@ -36,7 +47,6 @@ namespace DXCPkg {
             } else {
                 Task tsk = null;
                 string fileLocation = fileLocationTextBox.Text;
-                string proccessName = System.IO.Path.GetFileNameWithoutExtension(fileLocation);
 
                 using (TaskService ts = new TaskService()) {
                     TaskDefinition td = ts.NewTask();
@@ -109,5 +119,41 @@ namespace DXCPkg {
             lockControls(true);
 
         }
+
+        private string getLogFileLocation() {
+            string logFilePath = string.Empty;
+            string cmdFile = fileLocationTextBox.Text;
+            
+            if (File.Exists(cmdFile)) {
+                StreamReader SR = new StreamReader(cmdFile);
+                string line;
+                while ((line = SR.ReadLine()) != null) {
+                    if (line.Contains("APP_LogPath=")) {
+                        logFilePath = line.Substring((line.IndexOf("=") + 1), line.Length - (line.IndexOf("=")) - 1);
+                        break;
+                    }
+                }
+
+                SR.Close();
+                SR.Dispose();
+
+            }
+            return logFilePath;
+        }
+
+        private void openLogFolder(string logFilePath) {
+            string absolutePath = Environment.ExpandEnvironmentVariables(logFilePath);
+            if (Directory.Exists(absolutePath)) {
+                ProcessStartInfo startInfo = new ProcessStartInfo {
+                    Arguments = absolutePath,
+                    FileName = "explorer.exe"
+                };
+            Process.Start(startInfo);
+            } else {
+                MessageBox.Show(string.Format("{0} Directory does not exist!", absolutePath));
+            }
+        }
+
+ 
     }
 }
