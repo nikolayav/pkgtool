@@ -1,4 +1,4 @@
-﻿namespace DXCPkg
+﻿ namespace DXCPkg
 {
     partial class Form1
     {
@@ -39,9 +39,7 @@
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.label2 = new System.Windows.Forms.Label();
-            this.ultraControlContainerEditor1 = new Infragistics.Win.UltraWinEditors.UltraControlContainerEditor(this.components);
             this.richTextBox1 = new System.Windows.Forms.RichTextBox();
-            ((System.ComponentModel.ISupportInitialize)(this.ultraControlContainerEditor1)).BeginInit();
             this.SuspendLayout();
             // 
             // fileLocationTextBox
@@ -121,11 +119,6 @@
             this.label2.TabIndex = 6;
             this.label2.Text = "Status";
             // 
-            // ultraControlContainerEditor1
-            // 
-            this.ultraControlContainerEditor1.ContainingControl = this;
-            this.ultraControlContainerEditor1.Name = "ultraControlContainerEditor1";
-            // 
             // richTextBox1
             // 
             this.richTextBox1.BackColor = System.Drawing.SystemColors.ControlLight;
@@ -156,7 +149,6 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Form1";
             this.Text = "Tool";
-            ((System.ComponentModel.ISupportInitialize)(this.ultraControlContainerEditor1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -173,7 +165,6 @@
         private System.Windows.Forms.ProgressBar progressBar1;
         private System.ComponentModel.BackgroundWorker backgroundWorker1;
         private System.Windows.Forms.Label label2;
-        private Infragistics.Win.UltraWinEditors.UltraControlContainerEditor ultraControlContainerEditor1;
         private System.Windows.Forms.RichTextBox richTextBox1;
     }
 }
